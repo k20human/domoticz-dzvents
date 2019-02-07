@@ -43,14 +43,14 @@ local proba_pluie_h = {}
     en les personnalisant avec vos données personnelles.
     enfin vous pouvez choisir le niveau de "verbiage" des logs, seulement un niveau peut être actif; commenter les autres dans la section logging
 --]]
-proba_pluie_h[1]= "Proba Pluie 1h"
-proba_pluie_h[2]= "Proba Pluie 2h"
+proba_pluie_h[1]= nil
+proba_pluie_h[2]= nil
 proba_pluie_h[3]= nil
-proba_pluie_h[4]= "Proba Pluie 4h"
+proba_pluie_h[4]= nil
 proba_pluie_h[5]= nil
-proba_pluie_h[6]= "Proba Pluie 6h"
-proba_pluie_h[12]= "Proba Pluie 12h"
-proba_pluie_h[24]= "Proba Pluie 24h"
+proba_pluie_h[6]= nil
+proba_pluie_h[12]= "Meteo_12h"
+proba_pluie_h[24]= nil
 proba_pluie_h[36]= nil
 proba_pluie_h[48]= nil
 
@@ -64,16 +64,13 @@ return {
                 level    =   domoticz.LOG_ERROR,                                            -- Only one level can be active; comment others
                 -- level    =   domoticz.LOG_DEBUG,
                 -- level    =   domoticz.LOG_MODULE_EXEC_INFO,
-                marker    =   "Darksky Rain Probability v1.03 "      },
+                marker    =   "Darksky Rain Probability v1.04 "      },
 
    data    =   {   rainForecast     = {initial = {} },             -- Keep a copy of last json just in case
    },
     execute = function(domoticz, item)
         local DarkSkyAPIkey = domoticz.variables('api_forecast_io').value
         local geolocalisation = domoticz.variables('Latitude').value..","..domoticz.variables('Longitude').value
-        --local DarkSkyAPIkey = "1a2bf34bf56c78901f2345f6d7890f12" --fake API number
-        --local geolocalisation = "45.87,1.30" -- latitude,longitude
-
 
         local Forecast_url  = "https://api.darksky.net/forecast/"  -- url
         local extraData = "?units=ca&exclude=currently,minutely,daily,alerts,flags"
@@ -124,7 +121,7 @@ return {
                             debugMessage(os.date('%Y-%m-%d %H:%M:%S', json.hourly.data[j].time))
                             debugMessage(json.hourly.data[j].time)
                             debugMessage(json.hourly.data[j].precipProbability)
-                            domoticz.devices(proba_pluie_h[i]).updatePercentage(json.hourly.data[j].precipProbability*100)
+                            domoticz.variables(proba_pluie_h[i]).set(json.hourly.data[j].icon)
                     end
                 if j == 48 then break end
                 j = j +1
