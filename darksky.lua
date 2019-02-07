@@ -121,7 +121,7 @@ return {
                             debugMessage(os.date('%Y-%m-%d %H:%M:%S', json.hourly.data[j].time))
                             debugMessage(json.hourly.data[j].time)
                             debugMessage(json.hourly.data[j].precipProbability)
-                            domoticz.variables(proba_pluie_h[i]).set(json.hourly.data[j].icon)
+                            domoticz.devices(proba_pluie_h[i]).updateText(json.hourly.data[j].icon)
                     end
                 if j == 48 then break end
                 j = j +1
